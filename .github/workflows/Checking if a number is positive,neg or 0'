@@ -1,0 +1,37 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+
+void numtype(int);
+
+using namespace std;
+int main() 
+{
+    int num;
+    num=0;
+    cout<<"Please enter a number:";
+    cin>>num;
+    
+    numtype(num);
+
+    return 0;
+}
+
+void numtype(int num)
+{
+    if (num<0)
+    {
+        cout<<"Number is negative";
+        
+    }
+    if (num>0)
+    {
+        cout<<"Number is positive";
+      
+    }
+    if (num==0)
+    {
+        cout<<"Number is zero";
+     
+    }
+    return;
+}
