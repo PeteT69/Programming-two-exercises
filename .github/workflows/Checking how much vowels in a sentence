@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Modify function signature to pass counts by reference
+void isVowel(const string& str, int& AC, int& EC, int& IC, int& OC, int& UC);
+
+int main() {
+    string str;
+    
+    cout << "Please enter a string: ";
+    getline(cin, str); // Use getline to read the entire line including spaces
+    
+    int AC = 0;
+    int EC = 0;
+    int IC = 0;
+    int OC = 0;
+    int UC = 0;
+    
+    // Pass counts by reference to modify them inside the function
+    isVowel(str, AC, EC, IC, OC, UC);
+    
+    // Output the results
+    cout << str << endl;
+    cout << "Amount of a's: " << AC << endl;
+    cout << "Amount of e's: " << EC << endl;
+    cout << "Amount of i's: " << IC << endl;
+    cout << "Amount of o's: " << OC << endl;
+    cout << "Amount of u's: " << UC << endl;
+    
+    return 0;
+}
+
+// Function definition
+void isVowel(const string& str, int& AC, int& EC, int& IC, int& OC, int& UC) {
+    int counter = 0;
+    while (counter < str.length()) { // Fix loop condition
+        char ch = str.at(counter); // Get the character at the current index
+        
+        // Switch based on the character
+        switch (ch) {
+            case 'a':
+                AC++;
+                break;
+            case 'e':
+                EC++;
+                break;
+            case 'i':
+                IC++;
+                break;
+            case 'o':
+                OC++;
+                break;
+            case 'u':
+                UC++;
+                break;
+            default:
+                // Ignore non-vowel characters
+                break;
+        }
+        counter++; // Increment counter
+    }
+}
