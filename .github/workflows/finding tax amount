@@ -1,0 +1,82 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+namespace taxconstants {
+    const double lowest_taxrate = 0.15;
+    const double middle_taxrate = 0.25;
+    const double middle_taxrate_2500 = 2500.00;
+    const double highest_taxrate = 0.35;
+    const double highest_taxrate_8460 = 8460.00;
+
+    void getData(int &numPerson, int &numChildren, double &salary, int &pension, double &tax);
+    double taxAmount(int numPerson, double salary, int pension, double &tax, double &totalTax);
+}
+
+void taxconstants::getData(int &numPerson, int &numChildren, double &salary, int &pension, double &tax) {
+    char maritalStatus;
+
+    cout << "Enter marital status (M = Married, S = Single): ";
+    cin >> maritalStatus;
+
+    if (maritalStatus == 'm' || maritalStatus == 'M') {
+        cout << "Any children under the age of 14? ";
+        cin >> numChildren;
+        numPerson = 2 + numChildren;
+    } else if (maritalStatus == 's' || maritalStatus == 'S') {
+        numPerson = 1;
+    }
+
+    cout << "Enter gross income (combined income if married and both spouses are working): ";
+    cin >> salary;
+
+    cout << "Enter the percentage of gross income contributed to the pension: ";
+    cin >> pension;
+}
+
+double taxconstants::taxAmount(int numPerson, double salary, int pension, double &tax, double &totalTax) {
+    const int PERSONAL_EXEMPTION = 1500;
+    const int SINGLE_EXEMPTION = 4000;
+    const int MARRIED_EXEMPTION = 7000;
+
+    if (numPerson == 1) {
+        tax = salary - PERSONAL_EXEMPTION - SINGLE_EXEMPTION - salary * (pension / 100.0);
+    } else if (numPerson >= 2) {
+        tax = salary - MARRIED_EXEMPTION - (PERSONAL_EXEMPTION * numPerson) - salary * (pension / 100.0);
+    }
+
+    if (tax < 0) tax = 0; // Ensure tax is not negative
+
+    if (tax <= 15000) {
+        totalTax = tax * 0.15;
+    } else if (tax <= 40000) {
+        totalTax = 2250 + (tax - 15000) * 0.25;
+    } else {
+        totalTax = 8460 + (tax - 40000) * 0.35;
+    }
+
+    return totalTax;
+}
+
+int main() {
+    using namespace taxconstants;  // Use taxconstants namespace
+
+    cout << fixed << setprecision(2);
+
+    int numberOfPerson = 0;
+    int numberOfChildren = 0;
+    int pensionPercent = 0;
+    double grossIncome = 0;
+    double taxableIncome = 0;
+    double taxOwed = 0;
+
+    // Call getData and taxAmount with parameters
+    getData(numberOfPerson, numberOfChildren, grossIncome, pensionPercent, taxableIncome);
+    double taxPayment = taxAmount(numberOfPerson, grossIncome, pensionPercent, taxableIncome, taxOwed);
+
+    cout << "The tax is: " << taxPayment << endl;
+
+    return 0;
+}
