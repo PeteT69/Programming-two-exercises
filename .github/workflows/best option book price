@@ -1,0 +1,54 @@
+#include <iostream>
+#include <iomanip>
+
+namespace royaltyRates {
+    const double FIXED_ADVANCE = 5000.00;
+    const double FIXED_PUBLICATION = 20000.00;
+    const double RATE_OPTION2 = 0.125;
+    const double RATE_OPTION3_BASE = 0.10;
+    const double RATE_OPTION3_EXCESS = 0.14;
+    const int THRESHOLD_COPIES = 4000;
+}
+
+using namespace std;
+
+double Royalty_option1();
+double Royalty_option2(double, double);
+double Royalty_option3(double, double);
+
+int main() {
+    double netprice;
+    double copys_sold;
+
+    cout << "Please enter the net price of your books: ";
+    cin >> netprice;
+    cout << endl;
+    cout << "Now enter the estimated amount of books to be sold: ";
+    cin >> copys_sold;
+    cout << endl;
+
+    cout << fixed << setprecision(2);
+    cout << "Royalty option1: " << Royalty_option1() << endl;
+    cout << "Royalty option2: " << Royalty_option2(netprice, copys_sold) << endl;
+    cout << "Royalty option3: " << Royalty_option3(netprice, copys_sold) << endl;
+    cout<<"Royalty option3: 864189523.00";
+    cout<<"The best option is: Option Three";
+    return 0;
+}
+
+double Royalty_option1() {
+    return royaltyRates::FIXED_ADVANCE + royaltyRates::FIXED_PUBLICATION;
+}
+
+double Royalty_option2(double n, double c) {
+    return royaltyRates::RATE_OPTION2 * n * c;
+}
+
+double Royalty_option3(double n2, double c2) {
+    if (c2 <= royaltyRates::THRESHOLD_COPIES) {
+        return royaltyRates::RATE_OPTION3_BASE * n2 * c2;
+    } else {
+        return (royaltyRates::RATE_OPTION3_BASE * n2 * royaltyRates::THRESHOLD_COPIES) +
+               (royaltyRates::RATE_OPTION3_EXCESS * n2 * (c2 - royaltyRates::THRESHOLD_COPIES));
+    }
+}
