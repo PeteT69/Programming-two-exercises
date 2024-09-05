@@ -36,3 +36,31 @@ int main() {
 
     return 0;
 }
+
+code that works:
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    
+    int alpha[50];
+
+    for (int i = 0; i < 50; i++) {
+        if (i < 25) {
+            alpha[i] = i * i; 
+        } else {
+            alpha[i] = i * 3; 
+        }
+    }
+
+    
+    for (int i = 0; i < 50; i++) {
+        if (i % 10 == 0 && i != 0) {
+            cout << '\n'; 
+        }
+        cout << alpha[i] << " ";
+    }
+
+    return 0;
+}
