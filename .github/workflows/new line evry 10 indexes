@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    // Write your main here
+    const int SIZE=50;
+    double alpha[SIZE];
+
+    for(int i =0; i<25;i++)
+    {
+        if (i % 10 == 0 && i != 0)
+        {
+        cout<<"\n";
+        }
+        else
+        {
+        alpha[i]=i*i;
+        cout<<alpha[i]<<" ";
+        }
+        
+    }
+
+     for(int i =25; i<50;i++)
+    {
+        if (i % 10 == 0 && i != 0)
+        {
+        cout<<'\n';
+        }
+        else
+        {
+        alpha[i]=i*3;
+        cout<<alpha[i]<<" ";
+        }
+    }
+
+    return 0;
+}
