@@ -1,0 +1,94 @@
+#include <iostream>
+#include <limits>
+using namespace std;
+
+void getData(double[][12], const int, const int);
+int averageHigh(const double[][12], const int, const int);
+int averageLow(const double[][12], const int, const int);
+int indexHighTemp(const double[][12], const int, const int);
+int indexLowTemp(const double[][12], const int, const int);
+
+int main()
+{
+    const int column = 12;
+    const int row = 2;
+    double temperature[row][column];
+    
+    getData(temperature, column, row);
+    
+    double average_High = averageHigh(temperature, column, row);
+    double average_Low = averageLow(temperature, column, row);
+    int highest_temp_index = indexHighTemp(temperature, column, row);
+    int lowest_temp_index = indexLowTemp(temperature, column, row);
+    
+    cout << "Average high temperature: " << average_High << endl;
+    cout << "Average low temperature: " << average_Low << endl;
+    cout << "Highest temperature: " << (highest_temp_index) << endl;
+    cout << "Lowest temperature: " << (lowest_temp_index ) << endl;
+    
+    return 0;
+}
+
+void getData(double temp[][12], const int c, const int r)
+{
+    cout << "Enter highest temperatures for each month:\n";
+    for (int i = 0; i < c; i++)
+    {
+        cin >> temp[0][i];
+    }
+    cout << "Enter lowest temperatures for each month:\n";
+    for (int i = 0; i < c; i++)
+    {
+        cin >> temp[1][i];
+    }
+}
+
+int  averageHigh(const double temp[][12], const int c, const int r)
+{
+    double sum = 0;
+    for (int col = 0; col < c; col++)
+    {
+        sum += temp[0][col];
+    }
+    return sum / c;
+}
+
+int averageLow(const double temp[][12], const int c, const int r)
+{
+    double sum = 0;
+    for (int col = 0; col < c; col++)
+    {
+        sum += temp[1][col];
+    }
+    return sum / c;
+}
+
+int indexHighTemp(const double temp[][12], const int c, const int r)
+{
+    double largest_High = temp[0][0];
+    int index = 0;
+    for (int col = 1; col < c; col++)
+    {
+        if (temp[0][col] > largest_High)
+        {
+            largest_High = temp[0][col];
+          
+        }
+    }
+    return largest_High;
+}
+
+int indexLowTemp(const double temp[][12], const int c, const int r)
+{
+    double smallest_Low = temp[1][0];
+    int index = 0;
+    for (int col = 1; col < c; col++)
+    {
+        if (temp[1][col] < smallest_Low)
+        {
+            smallest_Low = temp[1][col];
+           
+        }
+    }
+    return smallest_Low;
+}
