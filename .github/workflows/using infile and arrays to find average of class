@@ -1,0 +1,108 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <sstream>
+
+
+using namespace std;
+const int MAX_NAME_LENGTH = 10; 
+
+char calculateGrade(double average);
+void readData(const string& filename, string names[], double scores[][5], char grades[], int& student_count);
+void outputResults(const string names[], const double scores[][5], const char grades[], int student_count);
+
+const int MAX_STUDENTS = 10;
+const int NUM_OF_TEST = 5;
+
+int main() {
+    // Declare arrays
+    string names[MAX_STUDENTS];
+    double TEST_Scores[MAX_STUDENTS][NUM_OF_TEST];
+    char grades[MAX_STUDENTS];
+    int student_count = 0;
+
+    // Read data
+    readData("ch8_Ex13Data.txt", names, TEST_Scores, grades, student_count);
+
+    // Output results
+    outputResults(names, TEST_Scores, grades, student_count);
+
+    return 0;
+}
+
+char calculateGrade(double average) {
+    if (average >= 90) return 'A';
+    else if (average >= 80) return 'B';
+    else if (average >= 70) return 'C';
+    else if (average >= 60) return 'D';
+    else return 'F';
+}
+
+void readData(const string& filename, string names[], double scores[][5], char grades[], int& student_count) {
+    ifstream infile(filename);
+
+    // Check if the file opened successfully
+    if (!infile.is_open()) {
+        cerr << "Unable to open file: " << filename << endl;
+        exit(1); // Exit the program if file cannot be opened
+    }
+
+    while (infile >> names[student_count]) {
+        double total_scores = 0.0;
+
+        for (int i = 0; i < NUM_OF_TEST; ++i) {
+            if (!(infile >> scores[student_count][i])) {
+                cerr << "Error reading score for student " << names[student_count] << endl;
+                infile.close();
+                exit(1); // Exit the program if there's an error reading scores
+            }
+            total_scores += scores[student_count][i];
+        }
+
+        double average = total_scores / NUM_OF_TEST;
+        grades[student_count] = calculateGrade(average);
+
+        ++student_count;
+        if (student_count >= MAX_STUDENTS) break;
+    }
+
+    infile.close();
+}
+
+void outputResults(const string names[], const double scores[][NUM_OF_TEST], const char grades[], int student_count) {
+    // Variables to calculate the total and class average
+    double totalScores = 0.0;
+    double averages[MAX_STUDENTS]; // Array to store average scores
+
+    // Output each student's information
+    for (int i = 0; i < student_count; ++i) {
+        double average = 0.0;
+        for (int k = 0; k < NUM_OF_TEST; ++k) {
+            average += scores[i][k];
+        }
+        average /= NUM_OF_TEST;
+
+        totalScores += average;
+        averages[i] = average;
+
+        // Print each student's data
+        cout << left << setw(MAX_NAME_LENGTH) << names[i]; // Print name
+        for (int j = 0; j < NUM_OF_TEST; ++j) {
+            cout << right << setw(8) << fixed << showpoint << setprecision(2) << scores[i][j]; // Print scores
+        }
+        cout << right << setw(8) << fixed << showpoint << setprecision(2) << average << endl; // Print average
+    }
+
+    // Calculate and print the class average
+    if (student_count > 0) {
+        double classAverage = totalScores / student_count;
+        cout << "Average ";
+        for (int i = 0; i < student_count; ++i) {
+            cout << setw(8) << fixed << showpoint << setprecision(2) << averages[i];
+        }
+        cout << endl;
+
+        cout << "Class average: " << fixed << showpoint << setprecision(2) << classAverage << endl;
+    }
+}
