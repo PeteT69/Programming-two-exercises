@@ -1,0 +1,75 @@
+#include <iostream>
+#include<string>
+
+using namespace std;
+
+struct computerType
+{
+    string manufacturer;
+    string modelType;
+    string processorType;
+    int ram;
+    int hardDriveSize;
+    int yearBuilt;
+    double price;
+};
+
+void enter_info(computerType &per1);
+
+void output(computerType per1);
+
+int main() {
+    
+    computerType p;
+
+
+    enter_info(p);
+    output(p);
+
+    return 0;
+}
+
+void enter_info(computerType &per1)
+{
+    cout<<"Enter the name of the manufacturer:";
+    getline(cin,per1.manufacturer);
+    cout<<endl;
+
+    cout<<"Enter the model of the computer:";
+    getline(cin,per1.modelType);
+    cout<<endl;
+
+     cout<<"Enter processor type:";
+    getline(cin,per1.processorType);
+    cout<<endl;
+
+    cout<<"Enter the size of RAM (in GB):";
+    cin>>per1.ram;
+    cout<<endl;
+
+    cout<<"Enter the size of hard drive (in GB):";
+    cin>>per1.hardDriveSize;
+    cout<<endl;
+
+    cout<<"Enter the year the computer was built:";
+    cin>>per1.yearBuilt;
+    cout<<endl;
+
+    cout<<"Enter the price: ";
+    cin>>per1.price;
+    cout<<endl;
+
+}
+
+void output(computerType per1)
+{
+
+    cout<<"Manufacturer: "<<per1.manufacturer<<"\n";
+    cout<<"Model: "<<per1.modelType<<"\n";
+    cout<<"Processor: "<<per1.processorType<<"\n";
+    cout<<"Ram: "<<per1.ram<<"\n";
+    cout<<"Hard Drive Size: "<<per1.hardDriveSize<<"\n";
+    cout<< "Year Built: "<<per1.yearBuilt<<"\n";
+    cout<<"Price: $"<<per1.price<<"\n";
+
+}
