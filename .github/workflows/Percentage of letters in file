@@ -1,0 +1,105 @@
+#include <iostream>
+#include <fstream>
+#include <cctype> // for isupper and islower functions
+#include <iomanip> // for std::fixed and std::setprecision
+using namespace std;
+
+struct LetterCount {
+    char character;
+    int count;
+    double percentage;
+};
+
+void openFile(ifstream& infile, ofstream& outfile) {
+    string inputFileName, outputFileName;
+   
+    
+
+    cout << "Enter input file name: ";
+    cin >> inputFileName;
+      infile.open(inputFileName);
+
+     if (!infile.is_open()) {
+        cout<< "The input file does not exist" << endl;
+        exit(1);
+    }
+    cout << "Enter output file name: ";
+    cin >> outputFileName;
+    outfile.open(outputFileName);
+    
+    if (!outfile.is_open()) {
+       outfile<< "The output file could not be opened." << endl;
+        exit(1);
+    }
+}
+
+void count(ifstream& infile, LetterCount cap[], LetterCount small[]) {
+    const int max_letters = 26;
+    char ch;
+    int totalLetters = 0;
+
+    // Initialize letter counts
+    for (int i = 0; i < max_letters; ++i) {
+        cap[i].character = 'A' + i;
+        cap[i].count = 0;
+        cap[i].percentage = 0.0;
+
+        small[i].character = 'a' + i;
+        small[i].count = 0;
+        small[i].percentage = 0.0;
+    }
+
+    // Count occurrences of each letter
+    while (infile.get(ch)) {
+        if (isupper(ch)) {
+            cap[ch - 'A'].count++;
+            totalLetters++;
+        } else if (islower(ch)) {
+            small[ch - 'a'].count++;
+            totalLetters++;
+        }
+    }
+
+    // Calculate percentages
+    for (int i = 0; i < max_letters; ++i) {
+        if (totalLetters > 0) {
+            cap[i].percentage = (static_cast<double>(cap[i].count) * 100) / totalLetters;
+            small[i].percentage = (static_cast<double>(small[i].count) * 100) / totalLetters;
+        }
+    }
+}
+
+void printResult(ofstream& outfile, LetterCount cap[], LetterCount small[]) {
+    const int max_letters = 26;
+
+    outfile << fixed << setprecision(2); // Set output precision for percentages
+
+    outfile << "Capital Letters:\n";
+    for (int i = 0; i < max_letters; ++i) {
+        outfile << cap[i].character << " " << cap[i].count 
+               <<" "<< cap[i].percentage << "%\n";
+    }
+
+    outfile << "\nSmall Letters:\n";
+    for (int i = 0; i < max_letters; ++i) {
+        outfile << small[i].character << " " << small[i].count 
+                 <<" "<< small[i].percentage << "%\n";
+    }
+}
+
+int main() {
+    ifstream infile;
+    ofstream outfile;
+
+    LetterCount cap[26];
+    LetterCount small[26];
+
+    openFile(infile, outfile);
+    count(infile, cap, small);
+    printResult(outfile, cap, small);
+
+    infile.close();
+    outfile.close();
+
+    return 0;
+}
