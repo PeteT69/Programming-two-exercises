@@ -1,0 +1,131 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+struct studentType
+{
+    static const int size = 20;
+    std::string studentFName[size];
+    std::string studentLName[size];
+    int testScore[size];
+    char grade[size];
+
+    void readData();
+    void output();
+    int highestscore();
+    void grade1();
+    void highest_score_students();
+};
+
+int main() {
+    studentType students;
+
+    students.readData();
+    students.grade1();
+    students.highest_score_students();
+    students.output();
+
+    return 0;
+}
+
+void studentType::readData()
+{
+    ifstream infile("Ch9_Ex2Data.txt");
+
+    if (!infile.is_open())
+    {
+        cout << "Unable to open file: Ch9_Ex2Data.txt" << endl;
+        return;
+    }
+
+    int index = 0;
+    while (index < size && infile >> studentFName[index] >> studentLName[index] >> testScore[index])
+    {
+        index++;
+    }
+
+    infile.close();
+}
+
+int studentType::highestscore()
+{
+    int largest = testScore[0];
+    for (int i = 1; i < size; i++)
+    {
+        if (testScore[i] > largest)
+        {
+            largest = testScore[i];
+        }
+    }
+    return largest;
+}
+
+void studentType::grade1()
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (testScore[i] >= 90)
+        {
+            grade[i] = 'A';
+        }
+        else if (testScore[i] >= 80)
+        {
+            grade[i] = 'B';
+        }
+        else if (testScore[i] >= 70)
+        {
+            grade[i] = 'C';
+        }
+        else if (testScore[i] >= 60)
+        {
+            grade[i] = 'D';
+        }
+        else
+        {
+            grade[i] = 'F';
+        }
+    }
+}
+
+void studentType::highest_score_students()
+{
+    ofstream outfile("Ch9_Ex2Out.txt", ios::app); // Open in append mode
+
+    if (!outfile.is_open())
+    {
+        cout << "Unable to open file: Ch9_Ex2Out.txt" << endl;
+        return;
+    }
+
+    int largest = highestscore();
+    outfile << "Highest test score: " << largest << endl;
+    outfile << "Students with highest score:" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        if (testScore[i] >=largest)
+        {
+            outfile << studentLName[i] << "," << studentFName[i] << endl;
+        }
+    }
+
+    outfile.close();
+}
+void studentType::output()
+{
+    ofstream outfile("Ch9_Ex2Out.txt");
+
+    if (!outfile.is_open())
+    {
+        cout << "Unable to open file: Ch9_Ex2Out.txt" << endl;
+        return;
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        outfile << studentLName[i] << ", " << studentFName[i] << " " << testScore[i] << " " << grade[i] << endl;
+    }
+
+    outfile.close();
+}
